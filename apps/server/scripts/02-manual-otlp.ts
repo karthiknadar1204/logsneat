@@ -6,7 +6,13 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { resourceFromAttributes } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 
-const exporter = new OTLPTraceExporter({ url: 'http://localhost:3004/v1/traces' });
+const exporter = new OTLPTraceExporter({
+  url: 'http://localhost:3004/v1/traces',
+  headers: {
+    Authorization: `Bearer ${process.env.TOKEN}`,
+    'x-project-id': process.env.PROJECT_ID ?? '',
+  },
+});
 
 const provider = new NodeTracerProvider({
   resource: resourceFromAttributes({ [ATTR_SERVICE_NAME]: 'logsneat-demo' }),

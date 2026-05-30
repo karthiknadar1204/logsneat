@@ -11,5 +11,5 @@ for (const s of spanRows) {
 
 console.log(`\ntraces: ${traceRows.length}`);
 for (const t of traceRows) {
-  console.log(`  ${t.rootSpanName}  workflow=${t.workflowName}  spans=${t.spanCount}  tokens=${t.totalTokens}  cost=$${t.totalCostUsd}  status=${t.status}`);
+  console.log(`  ${t.rootSpanName}  project=${t.projectId ?? '-'}  workflow=${t.workflowName}  spans=${t.spanCount}  tokens=${t.totalTokens}  cost=$${t.totalCostUsd}  status=${t.status}`);
 }

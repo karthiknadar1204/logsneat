@@ -44,7 +44,7 @@ function computeCost(model: string | null, prompt: number | null, completion: nu
 }
 
 // Flatten an OTLP payload into span rows.
-export function parseOtlp(body: any): SpanRow[] {
+export function parseOtlp(body: any, projectId: string): SpanRow[] {
   const rows: SpanRow[] = [];
 
   for (const rs of body.resourceSpans ?? []) {
@@ -64,6 +64,7 @@ export function parseOtlp(body: any): SpanRow[] {
         const completionTokens = num(map['llm.token_count.completion']);
 
         rows.push({
+          projectId,
           traceId: s.traceId,
           spanId: s.spanId,
           parentSpanId: s.parentSpanId ?? null,
@@ -94,7 +95,7 @@ export function parseOtlp(body: any): SpanRow[] {
 }
 
 // Roll span rows up into one summary row per trace.
-export function summarizeTraces(rows: SpanRow[]): TraceRow[] {
+export function summarizeTraces(rows: SpanRow[], projectId: string): TraceRow[] {
   const byTrace = new Map<string, SpanRow[]>();
   for (const r of rows) {
     const group = byTrace.get(r.traceId) ?? [];
@@ -115,6 +116,7 @@ export function summarizeTraces(rows: SpanRow[]): TraceRow[] {
     }
 
     out.push({
+      projectId,
       traceId,
       workflowName: root.workflowName ?? null,
       rootSpanName: root.name,
