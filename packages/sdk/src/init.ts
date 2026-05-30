@@ -23,8 +23,15 @@ export async function init(config: LogsneatConfig = {}) {
     headers: { Authorization: `Bearer ${apiKey}` },
   });
 
+  // Process-level identity, stamped on every span via the resource.
+  const resourceAttrs: Record<string, string | string[]> = { [ATTR_SERVICE_NAME]: workflowName };
+  if (config.userId) resourceAttrs['logsneat.user_id'] = config.userId;
+  if (config.tags) resourceAttrs['logsneat.tags'] = config.tags;
+  const sessionId = config.sessionId ?? (config.autoSession ? crypto.randomUUID() : undefined);
+  if (sessionId) resourceAttrs['logsneat.session_id'] = sessionId;
+
   provider = new NodeTracerProvider({
-    resource: resourceFromAttributes({ [ATTR_SERVICE_NAME]: workflowName }),
+    resource: resourceFromAttributes(resourceAttrs),
     spanProcessors: [new BatchSpanProcessor(exporter)],
   });
   provider.register();

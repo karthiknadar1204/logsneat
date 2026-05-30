@@ -6,14 +6,27 @@ await logsneat.init({
   apiKey: process.env.API_KEY,
   workflowName: 'sdk-demo',
   instrumentations: ['openai'],
+  userId: 'user_42',
+  tags: ['demo', 'phase3'],
+  autoSession: true,
 });
 
 const client = new openai.OpenAI();
-const res = await client.chat.completions.create({
-  model: 'gpt-4o-mini',
-  messages: [{ role: 'user', content: 'What is the capital of France?' }],
+
+// A tool, wrapped with span() — produces a TOOL span.
+const getCity = logsneat.span({ kind: 'TOOL', name: 'get_city' }, async () => {
+  return 'Paris';
 });
-console.log(res.choices[0]?.message.content);
+
+// The entry point, wrapped with trace() — the WORKFLOW root.
+await logsneat.trace('handle_request', { kind: 'WORKFLOW' }, async () => {
+  const city = await getCity();
+  const res = await client.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [{ role: 'user', content: `Tell me one short fact about ${city}.` }],
+  });
+  console.log(res.choices[0]?.message.content);
+});
 
 await logsneat.flush();
 await logsneat.shutdown();

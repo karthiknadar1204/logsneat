@@ -18,6 +18,11 @@ function attrsToMap(attrs: any[] = []): Record<string, unknown> {
     else if (v.intValue !== undefined) out[a.key] = Number(v.intValue);
     else if (v.doubleValue !== undefined) out[a.key] = v.doubleValue;
     else if (v.boolValue !== undefined) out[a.key] = v.boolValue;
+    else if (v.arrayValue !== undefined) {
+      out[a.key] = (v.arrayValue.values ?? []).map(
+        (x: any) => x.stringValue ?? x.intValue ?? x.doubleValue ?? x.boolValue,
+      );
+    }
   }
   return out;
 }
