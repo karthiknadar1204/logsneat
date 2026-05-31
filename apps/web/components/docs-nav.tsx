@@ -10,6 +10,7 @@ const NAV = [
   { id: 'concepts', label: 'Core concepts' },
   { id: 'manual', label: 'Manual instrumentation' },
   { id: 'kinds', label: 'Span kinds' },
+  { id: 'attributes', label: 'Span attributes' },
   { id: 'auto', label: 'Auto-instrumentation' },
   { id: 'flushing', label: 'Flushing & shutdown' },
   { id: 'example', label: 'Full example' },

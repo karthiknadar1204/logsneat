@@ -1,0 +1,1 @@
+ALTER TABLE "traces" ADD COLUMN "search_text" text;

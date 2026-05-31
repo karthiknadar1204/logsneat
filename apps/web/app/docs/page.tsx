@@ -124,6 +124,34 @@ const CONFIG_ROWS: [string, string, string, string][] = [
   ['autoSession', 'boolean', 'false', 'Generate a session id automatically at startup.'],
 ];
 
+const ATTRS_EXAMPLE = `// Set logsneat.* attributes on a span so the dashboard renders a rich view.
+await logsneat.trace('retrieve', { kind: 'RETRIEVER' }, async (span) => {
+  span.setAttribute('logsneat.retrieval.query', query);
+  span.setAttribute('logsneat.retrieval.top_k', 5);
+  const docs = await store.search(query, 5);
+  span.setAttribute('logsneat.retrieval.documents', JSON.stringify(docs));
+  return docs;
+});`;
+
+// [kind, attribute, description]
+const ATTR_ROWS: [string, string, string][] = [
+  ['RETRIEVER', 'logsneat.retrieval.query', 'The search query (string)'],
+  ['RETRIEVER', 'logsneat.retrieval.top_k', 'Number of results requested (int)'],
+  ['RETRIEVER', 'logsneat.retrieval.documents', 'Retrieved documents, JSON array → rendered as a doc list'],
+  ['RERANKER', 'logsneat.reranker.query', 'The original query'],
+  ['RERANKER', 'logsneat.reranker.input_documents', 'Documents before reranking (JSON)'],
+  ['RERANKER', 'logsneat.reranker.output_documents', 'Documents after reranking (JSON)'],
+  ['TOOL', 'input.value / output.value', 'Arguments and return value (auto for wrapped fns)'],
+  ['TOOL', 'logsneat.tool.name', 'Tool name shown in the dashboard'],
+  ['GUARDRAIL', 'logsneat.guardrail.input', 'Content being checked'],
+  ['GUARDRAIL', 'logsneat.guardrail.passed', 'Whether the check passed (bool) → pass/fail chip'],
+  ['GUARDRAIL', 'logsneat.guardrail.output', 'Result or failure reason'],
+  ['VECTOR_STORE', 'logsneat.vectordb.index_name', 'Index / collection name'],
+  ['VECTOR_STORE', 'logsneat.vectordb.embedding_model', 'Embedding model used'],
+  ['VECTOR_STORE', 'logsneat.vectordb.vector_dimension', 'Vector dimension (int)'],
+  ['VECTOR_STORE', 'logsneat.vectordb.similarity_algorithm', 'Distance metric (e.g. cosine)'],
+];
+
 const KINDS: [string, string][] = [
   ['WORKFLOW', 'Top-level entry point of a request.'],
   ['AGENT', 'An autonomous agent loop.'],
@@ -242,6 +270,36 @@ export default function DocsPage() {
                     <tr key={kind} className="border-b last:border-0">
                       <td className="whitespace-nowrap px-4 py-2 font-mono text-xs">{kind}</td>
                       <td className="px-4 py-2 text-muted-foreground">{use}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section className="space-y-4">
+            <H2 id="attributes">Span attributes</H2>
+            <P>
+              Set <code className="font-mono">logsneat.*</code> attributes on a span (via the <code className="font-mono">span</code> passed
+              to <code className="font-mono">trace()</code>) and the dashboard renders a specialized view for that span kind — a document
+              list for retrievers, a pass/fail chip for guardrails, and so on.
+            </P>
+            <CodeBlock code={ATTRS_EXAMPLE} />
+            <div className="overflow-x-auto rounded-lg border">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th className="px-4 py-2 font-medium">Kind</th>
+                    <th className="px-4 py-2 font-medium">Attribute</th>
+                    <th className="px-4 py-2 font-medium">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ATTR_ROWS.map(([kind, attr, desc], i) => (
+                    <tr key={i} className="border-b last:border-0">
+                      <td className="whitespace-nowrap px-4 py-2 font-mono text-xs">{kind}</td>
+                      <td className="whitespace-nowrap px-4 py-2 font-mono text-xs text-muted-foreground">{attr}</td>
+                      <td className="px-4 py-2 text-muted-foreground">{desc}</td>
                     </tr>
                   ))}
                 </tbody>

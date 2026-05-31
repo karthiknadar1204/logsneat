@@ -8,7 +8,9 @@ import { useProjectQuery } from '@/hooks/use-project-query';
 import { PageHeader, Loading, useProjectGate } from '@/components/screen';
 import { StatusBadge, SeverityBadge } from '@/components/badges';
 import { SpanTree } from '@/components/span-tree';
+import { TraceTimeline } from '@/components/trace-timeline';
 import { TracesTimeline } from '@/components/traces-timeline';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -75,7 +77,18 @@ function TraceDetail({ traceId }: { traceId: string }) {
           </div>
         ))}
       </div>
-      <SpanTree spans={spans} />
+      <Tabs defaultValue="tree">
+        <TabsList>
+          <TabsTrigger value="tree">Tree</TabsTrigger>
+          <TabsTrigger value="timeline">Timeline</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tree" className="mt-3">
+          <SpanTree spans={spans} />
+        </TabsContent>
+        <TabsContent value="timeline" className="mt-3">
+          <TraceTimeline spans={spans} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

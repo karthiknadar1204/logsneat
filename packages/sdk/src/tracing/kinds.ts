@@ -5,5 +5,8 @@ export type SpanKind =
   | 'CHAIN'
   | 'TOOL'
   | 'RETRIEVER'
+  | 'RERANKER'
   | 'EMBEDDING'
+  | 'GUARDRAIL'
+  | 'MCP_TOOL'
   | 'VECTOR_STORE';

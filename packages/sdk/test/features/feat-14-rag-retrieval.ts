@@ -25,9 +25,13 @@ await logsneat.trace('rag_answer', { kind: 'WORKFLOW', attributes: { question } 
     return e.data[0]!.embedding;
   });
 
-  const matches = await logsneat.trace('pinecone_query', { kind: 'VECTOR_STORE' }, async (span: any) => {
+  const matches = await logsneat.trace('pinecone_query', { kind: 'RETRIEVER' }, async (span: any) => {
     const r = await index.query({ vector: qVec, topK: 3, includeMetadata: true });
-    span.setAttribute('vector.top_score', r.matches?.[0]?.score ?? 0);
+    const docs = (r.matches ?? []).map((m: any) => ({ content: m.metadata?.text, score: m.score }));
+    // logsneat.* retrieval convention → dashboard renders a document list
+    span.setAttribute('logsneat.retrieval.query', question);
+    span.setAttribute('logsneat.retrieval.top_k', 3);
+    span.setAttribute('logsneat.retrieval.documents', JSON.stringify(docs));
     return r.matches ?? [];
   });
 
