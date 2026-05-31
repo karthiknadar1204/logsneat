@@ -15,7 +15,8 @@ import * as logsneat from 'logsneat';
 import OpenAI from 'openai';
 
 await logsneat.init({
-  apiKey: process.env.LOGSNEAT_API_KEY, // from your dashboard → API Keys
+  apiKey: process.env.LOGSNEAT_API_KEY,       // from your dashboard → API Keys
+  endpoint: 'https://server-production-ddcd.up.railway.app', // ⚠️ your backend URL — see note below
   workflowName: 'my-agent',
   instrumentations: ['openai'],
 });
@@ -34,6 +35,12 @@ await logsneat.flush();
 await logsneat.shutdown();
 ```
 
+> **⚠️ Set `endpoint` to your logsneat backend.** If you don't, it defaults to
+> `http://localhost:3004` — and if nothing is listening there, your spans are
+> sent into the void and **nothing shows up in the dashboard** (the SDK fails
+> silently; it never throws). You can also set it via the `LOGSNEAT_ENDPOINT`
+> environment variable instead of passing `endpoint`.
+
 ## Configuration
 
 `init(config)` options:
@@ -41,7 +48,7 @@ await logsneat.shutdown();
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `apiKey` | `string` | `LOGSNEAT_API_KEY` env | Project API key (required). |
-| `endpoint` | `string` | `LOGSNEAT_ENDPOINT` or `http://localhost:3004` | Where traces are sent. |
+| `endpoint` | `string` | `LOGSNEAT_ENDPOINT` or `http://localhost:3004` | **Your backend URL — set this.** Spans are POSTed to `<endpoint>/v1/traces`. Defaults to localhost, so traces vanish in production if unset. |
 | `workflowName` | `string` | `"default"` | App name shown in the dashboard. |
 | `instrumentations` | `string[]` | `["openai"]` | Libraries to auto-instrument. |
 | `tags` | `string[]` | — | Labels attached to every trace. |

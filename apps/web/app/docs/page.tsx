@@ -14,7 +14,8 @@ const QUICKSTART = `import * as logsneat from 'logsneat';
 import OpenAI from 'openai';
 
 await logsneat.init({
-  apiKey: process.env.LOGSNEAT_API_KEY, // from Dashboard -> API Keys
+  apiKey: process.env.LOGSNEAT_API_KEY,      // from Dashboard -> API Keys
+  endpoint: 'https://server-production-ddcd.up.railway.app', // your backend URL (see note below)
   workflowName: 'my-agent',
   instrumentations: ['openai'],
 });
@@ -34,7 +35,7 @@ await logsneat.shutdown();`;
 
 const INIT_CONFIG = `await logsneat.init({
   apiKey: process.env.LOGSNEAT_API_KEY,
-  endpoint: 'https://ingest.logsneat.com', // optional; set for self-hosting
+  endpoint: 'https://server-production-ddcd.up.railway.app', // required in prod (defaults to localhost)
   workflowName: 'checkout-agent',
   instrumentations: ['openai'],
   tags: ['prod', 'checkout'],
@@ -200,6 +201,12 @@ export default function DocsPage() {
             <H2 id="quickstart">Quickstart</H2>
             <P>Create an API key in the dashboard, initialize the SDK, and wrap your entry point in a trace.</P>
             <CodeBlock code={QUICKSTART} />
+            <div className="rounded-md border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-400">
+              <strong>Set <code className="font-mono">endpoint</code> to your backend.</strong> If you don&apos;t, it
+              defaults to <code className="font-mono">http://localhost:3004</code> — and if nothing is listening there,
+              spans are dropped silently and <strong>nothing appears in the dashboard</strong> (the SDK never throws).
+              You can also use the <code className="font-mono">LOGSNEAT_ENDPOINT</code> env var.
+            </div>
           </section>
 
           <section className="space-y-4">
