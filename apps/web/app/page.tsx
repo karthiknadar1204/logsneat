@@ -27,17 +27,13 @@ export default function Home() {
             <Link href="#" className="transition-colors hover:text-foreground">
               Docs
             </Link>
-            <Link href="#" className="transition-colors hover:text-foreground">
-              Pricing
-            </Link>
-            <Link href="#" className="transition-colors hover:text-foreground">
-              Changelog
-            </Link>
           </nav>
 
           <div className="flex items-center gap-2">
             <Link
-              href="#"
+              href="https://github.com/karthiknadar1204/mini-agnost-ai"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub"
               className="hidden p-2 text-muted-foreground transition-colors hover:text-foreground sm:block"
             >
