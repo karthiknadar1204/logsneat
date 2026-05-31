@@ -1,5 +1,9 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+'use client';
+
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { useAuth } from '@/components/auth-provider';
 
 function GithubMark() {
   return (
@@ -10,23 +14,23 @@ function GithubMark() {
 }
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen flex-col bg-white text-zinc-900">
-      {/* nav */}
-      <header className="border-b border-zinc-200">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-          <span className="font-mono text-base font-medium tracking-tight">
-            logsneat
-          </span>
+  const { user } = useAuth();
 
-          <nav className="hidden items-center gap-8 text-sm text-zinc-600 md:flex">
-            <Link href="#" className="transition-colors hover:text-zinc-900">
+  return (
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
+      {/* nav */}
+      <header className="border-b">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+          <span className="font-mono text-base font-medium tracking-tight">logsneat</span>
+
+          <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
+            <Link href="#" className="transition-colors hover:text-foreground">
               Docs
             </Link>
-            <Link href="#" className="transition-colors hover:text-zinc-900">
+            <Link href="#" className="transition-colors hover:text-foreground">
               Pricing
             </Link>
-            <Link href="#" className="transition-colors hover:text-zinc-900">
+            <Link href="#" className="transition-colors hover:text-foreground">
               Changelog
             </Link>
           </nav>
@@ -35,16 +39,25 @@ export default function Home() {
             <Link
               href="#"
               aria-label="GitHub"
-              className="hidden p-2 text-zinc-500 transition-colors hover:text-zinc-900 sm:block"
+              className="hidden p-2 text-muted-foreground transition-colors hover:text-foreground sm:block"
             >
               <GithubMark />
             </Link>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/login">Log in</Link>
-            </Button>
-            <Button asChild size="sm">
-              <Link href="/signup">Get started</Link>
-            </Button>
+            <ThemeToggle />
+            {user ? (
+              <Button asChild size="sm">
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link href="/login">Log in</Link>
+                </Button>
+                <Button asChild size="sm">
+                  <Link href="/signup">Get started</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -53,48 +66,51 @@ export default function Home() {
       <main className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
         <Link
           href="#"
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-zinc-300"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/20"
         >
           <span className="size-1.5 rounded-full bg-emerald-500" />
           Open-source agent observability
         </Link>
 
         <h1 className="max-w-3xl text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-          Observability for AI agents,{" "}
-          <span className="font-serif text-zinc-500 italic font-normal">
-            made simple
-          </span>
+          Observability for AI agents,{' '}
+          <span className="font-serif italic font-normal text-muted-foreground">made simple</span>
         </h1>
 
-        <p className="mt-6 max-w-xl text-pretty text-lg leading-7 text-zinc-600">
-          Trace every run, surface failures, and understand cost and latency
-          across your agents — all from one clean dashboard built on
-          OpenTelemetry.
+        <p className="mt-6 max-w-xl text-pretty text-lg leading-7 text-muted-foreground">
+          Trace every run, surface failures, and understand cost and latency across your agents — all from one
+          clean dashboard built on OpenTelemetry.
         </p>
 
         <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
-          <Button asChild size="lg" className="w-full sm:w-auto">
-            <Link href="/signup">Start tracing free</Link>
-          </Button>
+          {user ? (
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <Link href="/dashboard">Go to dashboard</Link>
+            </Button>
+          ) : (
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <Link href="/signup">Start tracing free</Link>
+            </Button>
+          )}
           <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
             <Link href="#">View the docs</Link>
           </Button>
         </div>
 
-        <p className="mt-6 text-sm text-zinc-400">
+        <p className="mt-6 text-sm text-muted-foreground/70">
           No credit card required · Drop-in SDK · Self-host or cloud
         </p>
       </main>
 
       {/* footer */}
-      <footer className="border-t border-zinc-200">
-        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-6 text-xs text-zinc-500">
+      <footer className="border-t">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-6 text-xs text-muted-foreground">
           <span>© 2026 logsneat</span>
           <div className="flex items-center gap-6">
-            <Link href="#" className="transition-colors hover:text-zinc-900">
+            <Link href="#" className="transition-colors hover:text-foreground">
               Privacy
             </Link>
-            <Link href="#" className="transition-colors hover:text-zinc-900">
+            <Link href="#" className="transition-colors hover:text-foreground">
               Terms
             </Link>
           </div>

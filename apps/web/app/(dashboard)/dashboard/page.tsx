@@ -44,7 +44,7 @@ export default function CommandCenterPage() {
   }, [projectId]);
 
   return (
-    <div className="mx-auto max-w-6xl p-6 sm:p-8">
+    <div className="p-6 sm:p-8">
       <header className="mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">Command Center</h1>
         <p className="text-sm text-muted-foreground">An overview of your agent activity.</p>

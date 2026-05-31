@@ -18,7 +18,7 @@ export default function DetectionsPage() {
   const sev = (k: string) => summary?.bySeverity.find((s) => s.severity === k)?.count ?? 0;
 
   return (
-    <div className="mx-auto max-w-6xl p-6 sm:p-8">
+    <div className="p-6 sm:p-8">
       <PageHeader title="Detections" description="Automatic rule-based flags on your traces." />
       {gate ? (
         gate

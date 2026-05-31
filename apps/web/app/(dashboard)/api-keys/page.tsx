@@ -93,7 +93,7 @@ export default function ApiKeysPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl p-6 sm:p-8">
+    <div className="p-6 sm:p-8">
       <header className="mb-6 flex items-end justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">API Keys</h1>

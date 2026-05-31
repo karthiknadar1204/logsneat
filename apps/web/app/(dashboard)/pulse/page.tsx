@@ -16,7 +16,7 @@ export default function PulsePage() {
   const { data: tools, loading: l2 } = useProjectQuery(() => pulseApi.tools());
 
   return (
-    <div className="mx-auto max-w-6xl p-6 sm:p-8">
+    <div className="p-6 sm:p-8">
       <PageHeader title="Pulse" description="Health and latency of your tools." />
       {gate ? (
         gate

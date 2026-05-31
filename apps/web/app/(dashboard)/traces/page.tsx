@@ -78,7 +78,7 @@ export default function TracesPage() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl p-6 sm:p-8">
+    <div className="p-6 sm:p-8">
       <PageHeader title="Raw Logs" description="Every trace, with its full span tree." />
       {gate ? (
         gate

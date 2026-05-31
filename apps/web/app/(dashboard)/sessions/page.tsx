@@ -90,7 +90,7 @@ export default function SessionsPage() {
   const { data: sessions, loading: ls } = useProjectQuery(() => sessionsApi.list(user ?? undefined), [user]);
 
   return (
-    <div className="mx-auto max-w-6xl p-6 sm:p-8">
+    <div className="p-6 sm:p-8">
       <PageHeader title="User Stories" description="Users, their sessions, and reconstructed conversations." />
       {gate ? (
         gate

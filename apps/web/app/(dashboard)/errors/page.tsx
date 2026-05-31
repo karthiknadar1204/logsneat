@@ -17,7 +17,7 @@ export default function ErrorsPage() {
   const { data: list, loading: l3 } = useProjectQuery(() => errorsApi.list());
 
   return (
-    <div className="mx-auto max-w-6xl p-6 sm:p-8">
+    <div className="p-6 sm:p-8">
       <PageHeader title="Error Captures" description="Failed spans across your traces." />
       {gate ? (
         gate
