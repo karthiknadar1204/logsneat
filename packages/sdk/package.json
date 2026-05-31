@@ -1,6 +1,6 @@
 {
   "name": "logsneat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Drop-in observability SDK for AI agents — trace workflows, tools, retrieval and LLM calls, built on OpenTelemetry.",
   "type": "module",
   "main": "./dist/index.js",
